@@ -59,7 +59,7 @@ services:
         LIVY_TAGGED_RELEASE: "${LIVY_TAGGED_RELEASE}"
         SCALA_VERSION: "${SCALA_VERSION}"
         COMBINE_BRANCH: "${COMBINE_BRANCH}"
-    image: ghcr.io/mi-dpla/combine-docker/django
+    #image: ghcr.io/mi-dpla/combine-docker/django
     depends_on:
       - mysql
     volumes:
@@ -131,7 +131,6 @@ services:
 
   nginx:
     image: nginx:latest
-    container_name: nginx
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx/mime.types:/etc/nginx/mime.types
