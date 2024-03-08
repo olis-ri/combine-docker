@@ -71,7 +71,7 @@ services:
         read_only: true
       - type: bind # Bind Combine app submodule
         source: ./combine/combine
-        target: /opt/combine
+        target: /opt/combine:shared
         read_only: false # owner
         bind:
           propagation: shared

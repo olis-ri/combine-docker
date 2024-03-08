@@ -38,6 +38,6 @@ docker-compose run hadoop-namenode /bin/bash -c "mkdir -p /hdfs/namenode"
 docker-compose run hadoop-namenode /bin/bash -c "echo 'Y' | /opt/hadoop/bin/hdfs namenode -format"
 
 # Combine db migrations and superuser create
-docker-compose run combine-django /bin/bash -c "bash /tmp/combine_db_prepare.sh"
+docker-compose run django /bin/bash -c "bash /tmp/combine_db_prepare.sh"
 
 $WORKDIR/buildstatic.sh
