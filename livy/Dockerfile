@@ -11,7 +11,8 @@ ENV ELASTICSEARCH_HADOOP_CONNECTOR_VERSION=$ELASTICSEARCH_HADOOP_CONNECTOR_VERSI
 
 # Download and install Livy
 RUN apt-get update \
- && apt-get install git -y \
+ && apt-get install git python3-dev python3-pip -y \
+ && update-alternatives --install /usr/bin/python python /usr/bin/python3 10 \
  && cd /opt \
  && git clone https://github.com/apache/incubator-livy livy \
  && cd livy \
