@@ -63,30 +63,13 @@ services:
     depends_on:
       - mysql
     volumes:
+      - ./combine/combine:/opt/combine
       - ./combine/combine/static:/static
-      - ./combinelib:/combinelib
-      - type: volume
-        source: hdfs
-        target: /hdfs
-        read_only: true
-      - type: bind # Bind Combine app submodule
-        source: ./combine/combine
-        target: /opt/combine
-        read_only: false # owner
-        bind:
-          propagation: shared
-      - type: volume
-        source: combine_home
-        target: /home/combine
-        read_only: false # owner
-      - type: volume
-        source: combine_python_env
-        target: /opt/conda/envs/combine
-        read_only: false # owner
-      - type: volume
-        source: combine_tmp
-        target: /tmp
-        read_only: false
+      - ./combinelib:/combinelib 
+      - combine_home:/home/combine
+      - combine_tmp:/tmp
+      - hdfs:/hdfs:ro
+
     expose:
       - "8000"
     # use ports for testing
@@ -99,29 +82,12 @@ services:
       context: .
       dockerfile: ./celery/Dockerfile
     volumes:
+      - ./combine/combine:/opt/combine
       - ./combinelib:/combinelib
-      - type: volume
-        source: hdfs
-        target: /hdfs
-        read_only: true
-      - type: bind # Bind Combine app submodule
-        source: ./combine/combine
-        target: /opt/combine
-        read_only: false # owner
-        bind:
-          propagation: shared
-      - type: volume
-        source: combine_home
-        target: /home/combine
-        read_only: false # owner
-      - type: volume
-        source: combine_python_env
-        target: /opt/conda/envs/combine
-        read_only: false # owner
-      - type: volume
-        source: combine_tmp
-        target: /tmp
-        read_only: false
+      - combine_python_env:/opt/conda/envs/combine
+      - combine_tmp:/tmp
+      - hdfs:/hdfs:ro
+
     working_dir: /opt/combine
     command: supervisord -c /etc/supervisor/supervisord.conf -n
     expose:
@@ -137,41 +103,14 @@ services:
         LIVY_TAGGED_RELEASE: "${LIVY_TAGGED_RELEASE}"
         SCALA_VERSION: "${SCALA_VERSION}"
     volumes:
+      - ./combine/combine:/opt/combine
       - ./combinelib:/combinelib
-      - type: volume
-        source: hdfs
-        target: /hdfs
-        read_only: true
-      - type: volume
-        source: hadoop_binaries
-        target: /opt/hadoop
-        read_only: true
-      - type: volume
-        source: spark_binaries
-        target: /opt/spark
-        read_only: false # owner of /opt/spark when Livy only
-      - type: volume
-        source: livy_binaries
-        target: /opt/livy
-        read_only: false # owner of dir
-      - type: bind # Bind Combine app submodule
-        source: ./combine/combine
-        target: /opt/combine
-        read_only: false # owner
-        bind:
-          propagation: shared
-      - type: volume
-        source: combine_home
-        target: /home/combine
-        read_only: false
-      - type: volume
-        source: combine_python_env
-        target: /opt/conda/envs/combine
-        read_only: true
-      - type: volume
-        source: combine_tmp
-        target: /tmp
-        read_only: false
+      - combine_home:/home/combine
+      - combine_python_env:/opt/conda/envs/combine
+      - hdfs:/hdfs:ro
+      - hadoop_binaries:/opt/haddop:ro
+      - spark_binaries:/opt/spark
+      - livy_binaries:/opt/livy
     expose:
       - "8998"
       - "4040"
@@ -276,3 +215,4 @@ volumes:
 
 # shared
   combine:
+  combinelib:

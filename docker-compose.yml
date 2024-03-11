@@ -102,6 +102,9 @@ services:
       args:
         LIVY_TAGGED_RELEASE: "${LIVY_TAGGED_RELEASE}"
         SCALA_VERSION: "${SCALA_VERSION}"
+        SPARK_VERSION: "${SPARK_VERSION}"
+        HADOOP_VERSION_SHORT: "${HADOOP_VERSION_SHORT}"
+        ELASTICSEARCH_HADOOP_CONNECTOR_VERSION: "${ELASTICSEARCH_HADOOP_CONNECTOR_VERSION}"
     volumes:
       - ./combine/combine:/opt/combine
       - ./combinelib:/combinelib
@@ -116,15 +119,15 @@ services:
       - "4040"
     command:  bash -c "nohup pyjxslt 6767 & > /tmp/pyjxslt.out && /opt/livy/bin/livy-server"
   
-  spark-cluster-base:
-    build:
-      context: ./spark_cluster_base
-      dockerfile: Dockerfile
-      args:
-        SPARK_VERSION: "${SPARK_VERSION}"
-        HADOOP_VERSION_SHORT: "${HADOOP_VERSION_SHORT}"
-        ELASTICSEARCH_HADOOP_CONNECTOR_VERSION: "${ELASTICSEARCH_HADOOP_CONNECTOR_VERSION}"
-    command:  /bin/true # exits code 0
+  # spark-cluster-base:
+  #   build:
+  #     context: ./spark_cluster_base
+  #     dockerfile: Dockerfile
+  #     args:
+  #       SPARK_VERSION: "${SPARK_VERSION}"
+  #       HADOOP_VERSION_SHORT: "${HADOOP_VERSION_SHORT}"
+  #       ELASTICSEARCH_HADOOP_CONNECTOR_VERSION: "${ELASTICSEARCH_HADOOP_CONNECTOR_VERSION}"
+  #   command:  /bin/true # exits code 0
   
   hadoop-namenode:
     build:
